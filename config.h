@@ -1,0 +1,12 @@
+#define HAVE_STDBOOL_H 1
+#define HAVE_STRING_H 1
+#define HAVE_STDINT_H 1
+
+#define HAVE_DECODER_LZMA1 1
+#define HAVE_DECODER_LZMA2 1
+#define HAVE_DECODER_X86 1
+#define HAVE_DECODER_IA64 1
+
+#define HAVE_SYS_ENDIAN_H 1
+#define HAVE_SYS_TIME_H 1
+#define HAVE_UNISTD_H 1
