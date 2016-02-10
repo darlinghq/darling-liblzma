@@ -119,11 +119,11 @@ set(lzma_sources
 )
 
 
-SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib${SUFFIX}/darling")
+SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/darling")
 SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE) 
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 add_library(lzma SHARED ${lzma_sources})
 target_link_libraries(lzma system)
 
-install(TARGETS lzma DESTINATION lib${SUFFIX}/darling)
+install(TARGETS lzma DESTINATION ${CMAKE_INSTALL_LIBDIR}/darling)
