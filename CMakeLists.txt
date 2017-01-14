@@ -132,3 +132,4 @@ add_library(lzma SHARED ${lzma_sources})
 target_link_libraries(lzma system)
 
 install(TARGETS lzma DESTINATION ${CMAKE_INSTALL_LIBDIR}/darling)
+install(DIRECTORY usr DESTINATION libexec/darling)
