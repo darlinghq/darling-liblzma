@@ -9,7 +9,6 @@ endif(COMMAND cmake_policy)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse -msse2 -msse3 -w -nostdinc")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__DARWIN_UNIX03 -fPIC -w")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -nostdlib -Wl,--version-script=${DARLING_TOP_DIRECTORY}/darwin.map")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/liblzma/api)
@@ -118,15 +117,13 @@ set(lzma_sources
 	src/common/tuklib_progname.c
 )
 
-
-SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib${SUFFIX}/darling")
-SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE) 
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
-add_library(lzma SHARED ${lzma_sources})
+set(DYLIB_INSTALL_NAME "/usr/lib/liblzma.5.dylib")
+add_darling_library(lzma SHARED ${lzma_sources})
 target_link_libraries(lzma system)
+set_target_properties(lzma PROPERTIES OUTPUT_NAME "lzma.5")
 
-install(TARGETS lzma DESTINATION ${CMAKE_INSTALL_LIBDIR}/darling)
+InstallSymlink("liblzma.5.dylib" "${CMAKE_INSTALL_PREFIX}/libexec/darling/usr/lib/liblzma.dylib")
+install(TARGETS lzma DESTINATION libexec/darling/usr/lib)
 
 install(DIRECTORY usr DESTINATION libexec/darling)
 
