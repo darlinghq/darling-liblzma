@@ -118,6 +118,9 @@ set(lzma_sources
 )
 
 set(DYLIB_INSTALL_NAME "/usr/lib/liblzma.5.dylib")
+set(DYLIB_COMPAT_VERSION "6.0.0")
+set(DYLIB_CURRENT_VERSION "6.3.0")
+
 add_darling_library(lzma SHARED ${lzma_sources})
 make_fat(lzma)
 target_link_libraries(lzma system)
