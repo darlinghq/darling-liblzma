@@ -126,8 +126,25 @@ make_fat(lzma)
 target_link_libraries(lzma system)
 set_target_properties(lzma PROPERTIES OUTPUT_NAME "lzma.5")
 
+add_darling_executable(xz
+	src/xz/args.c
+	src/xz/coder.c
+	src/xz/file_io.c
+	src/xz/hardware.c
+	src/xz/list.c
+	src/xz/main.c
+	src/xz/message.c
+	src/xz/mytime.c
+	src/xz/options.c
+	src/xz/signals.c
+	src/xz/suffix.c
+	src/xz/util.c
+)
+target_link_libraries(xz system lzma)
+
 InstallSymlink("liblzma.5.dylib" "${CMAKE_INSTALL_PREFIX}/libexec/darling/usr/lib/liblzma.dylib")
 install(TARGETS lzma DESTINATION libexec/darling/usr/lib)
+install(TARGETS xz DESTINATION libexec/darling/usr/bin)
 
 install(DIRECTORY usr DESTINATION libexec/darling)
 
