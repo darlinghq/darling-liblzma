@@ -8,8 +8,7 @@ if(COMMAND cmake_policy)
 endif(COMMAND cmake_policy)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse -msse2 -msse3 -w -nostdinc")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__DARWIN_UNIX03 -fPIC -w -ggdb -O0")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -nostdlib -Wl,--version-script=${DARLING_TOP_DIRECTORY}/darwin.map")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__DARWIN_UNIX03 -fPIC -w")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/liblzma/api)
@@ -25,11 +24,6 @@ include_directories(${DARLING_TOP_DIRECTORY}/platform-include)
 include_directories(${DARLING_TOP_DIRECTORY}/src/libc/fbsdcompat)
 add_definitions(-D_LARGEFILE64_SOURCE=1 -DHAVE_CONFIG_H=1 -DMYTHREAD_POSIX=1)
 add_definitions(-DTUKLIB_PHYSMEM_SYSCTL=1 -DTUKLIB_CPUCORES_SYSCTL=1)
-
-add_definitions(-DHAVE_ENCODER_LZMA2 -DHAVE_ENCODER_LZMA)
-add_definitions(-DHAVE_DECODER_LZMA2 -DHAVE_DECODER_LZMA)
-add_definitions(-DHAVE_CHECK_CRC32 -DHAVE_CHECK_CRC64 -DHAVE_CHECK_SHA256)
-add_definitions(-DHAVE_MF_BT4 -DHAVE_MF_BT3 -DHAVE_MF_BT2 -DHAVE_MF_HC4 -DHAVE_MF_HC3)
 
 set(lzma_sources
 	src/liblzma/common/alone_decoder.c
@@ -123,13 +117,34 @@ set(lzma_sources
 	src/common/tuklib_progname.c
 )
 
+set(DYLIB_INSTALL_NAME "/usr/lib/liblzma.5.dylib")
+set(DYLIB_COMPAT_VERSION "6.0.0")
+set(DYLIB_CURRENT_VERSION "6.3.0")
 
-SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/darling")
-SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE) 
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
-add_library(lzma SHARED ${lzma_sources})
+add_darling_library(lzma SHARED ${lzma_sources})
+make_fat(lzma)
 target_link_libraries(lzma system)
+set_target_properties(lzma PROPERTIES OUTPUT_NAME "lzma.5")
 
-install(TARGETS lzma DESTINATION ${CMAKE_INSTALL_LIBDIR}/darling)
+add_darling_executable(xz
+	src/xz/args.c
+	src/xz/coder.c
+	src/xz/file_io.c
+	src/xz/hardware.c
+	src/xz/list.c
+	src/xz/main.c
+	src/xz/message.c
+	src/xz/mytime.c
+	src/xz/options.c
+	src/xz/signals.c
+	src/xz/suffix.c
+	src/xz/util.c
+)
+target_link_libraries(xz system lzma)
+
+InstallSymlink("liblzma.5.dylib" "${CMAKE_INSTALL_PREFIX}/libexec/darling/usr/lib/liblzma.dylib")
+install(TARGETS lzma DESTINATION libexec/darling/usr/lib)
+install(TARGETS xz DESTINATION libexec/darling/usr/bin)
+
 install(DIRECTORY usr DESTINATION libexec/darling)
+
