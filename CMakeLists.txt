@@ -20,8 +20,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/liblzma/simple)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/liblzma/delta)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/liblzma/rangecoder)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/common)
-include_directories(${DARLING_TOP_DIRECTORY}/platform-include)
-include_directories(${DARLING_TOP_DIRECTORY}/src/libc/fbsdcompat)
 add_definitions(-D_LARGEFILE64_SOURCE=1 -DHAVE_CONFIG_H=1 -DMYTHREAD_POSIX=1)
 add_definitions(-DTUKLIB_PHYSMEM_SYSCTL=1 -DTUKLIB_CPUCORES_SYSCTL=1)
 
