@@ -155,7 +155,9 @@
 #define HAVE_ICONV 1
 
 /* Define to 1 if you have the <immintrin.h> header file. */
+#if defined(__i386__) || defined(__x86_64__)
 #define HAVE_IMMINTRIN_H 1
+#endif
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
@@ -294,7 +296,9 @@
 /* #undef HAVE__FUTIME */
 
 /* Define to 1 if _mm_movemask_epi8 is available. */
+#if defined(__i386__) || defined(__x86_64__)
 #define HAVE__MM_MOVEMASK_EPI8 1
+#endif
 
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
